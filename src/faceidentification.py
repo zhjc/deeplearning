@@ -19,6 +19,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.setupUi(self)
+        self.actionOpen_File.triggered.connect(self.openfile)
         self.actionAbout.triggered.connect(self.about)
         self.actionStart.triggered.connect(self.start)
         self.actionStop.triggered.connect(self.stop)
@@ -37,7 +38,19 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     
     def capture_and_idfy(self):
         pass
-    
+        
+    def openfile(self):
+        filename, filetype = QFileDialog.getOpenFileName(self, "Select File", "C:/", "jpg Files (*.jpg);;png Files (*.png);;")
+        if filename is None or filename=="":
+            return
+        img = QImage(filename)
+        if img is None:
+            QMessageBox.warning(self, "Warning", self.tr("图片载入失败，请重新操作"))
+            return
+        else:
+            qpm = QPixmap.fromImage(img)
+            miniqpm = qpm.scaled(341,361,QtCore.Qt.KeepAspectRatio)
+            self.camera.setPixmap(miniqpm)   
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

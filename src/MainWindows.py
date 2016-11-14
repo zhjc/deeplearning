@@ -64,7 +64,7 @@ class MyWindow(QMainWindow,Ui_ImageWorks):
             return
         else:
             qpm = QPixmap.fromImage(img)
-            miniqpm = qpm.scaled(290,360,QtCore.Qt.KeepAspectRatio)
+            miniqpm = qpm.scaled(301,331,QtCore.Qt.KeepAspectRatio)
             self.label_2.setPixmap(miniqpm)
             self.label_qpiname = filename
             self.onlinefi = False

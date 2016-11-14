@@ -108,6 +108,7 @@ class Ui_MainWindow(object):
         self.actionStart.setObjectName("actionStart")
         self.actionStop = QtWidgets.QAction(MainWindow)
         self.actionStop.setObjectName("actionStop")
+        self.menuFile.addAction(self.actionOpen_File)
         self.menuFile.addAction(self.actionExit)
         self.menuEdit.addAction(self.actionStart)
         self.menuEdit.addAction(self.actionStop)
@@ -122,7 +123,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "FaceIdentification"))
         self.identification.setText(_translate("MainWindow", "Identification"))
         self.top_k_label.setText(_translate("MainWindow", "Top-k Results"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
