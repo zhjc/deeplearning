@@ -11,8 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\imageworks\extract_features.cpp" />
+    <ClCompile Include="..\..\..\imageworks\face_alignment.cpp" />
+    <ClCompile Include="..\..\..\imageworks\jsoncpp\src\lib_json\json_reader.cpp" />
+    <ClCompile Include="..\..\..\imageworks\jsoncpp\src\lib_json\json_value.cpp" />
+    <ClCompile Include="..\..\..\imageworks\jsoncpp\src\lib_json\json_writer.cpp" />
     <ClCompile Include="..\..\..\imageworks\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\imageworks\face_alignment.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\autolink.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\config.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\features.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\forwards.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\json.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\reader.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\value.h" />
+    <ClInclude Include="..\..\..\imageworks\jsoncpp\include\json\writer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D1D63EF2-4848-47A7-8B53-FB716169FD9E}</ProjectGuid>
@@ -59,7 +73,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;CPU_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(OPENCV_HOME);$(OPENCV_HOME)\modules;$(OPENCV_HOME)\modules\core\include;$(OPENCV_HOME)\build;$(OPENCV_HOME)\modules\highgui\include;$(OPENCV_HOME)\modules\imgproc\include;$(OPENCV_HOME)\modules\imgcodecs\include;$(OPENCV_HOME)\modules\videoio\include;$(OPENCV_HOME)\modules\video\include;$(OPENCV_HOME)\modules\objdetect\include;$(FLANDMARK_HOME);$(OPENCV_HOME)\modules\photo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_HOME);$(OPENCV_HOME)\modules;$(OPENCV_HOME)\modules\core\include;$(OPENCV_HOME)\build;$(OPENCV_HOME)\modules\highgui\include;$(OPENCV_HOME)\modules\imgproc\include;$(OPENCV_HOME)\modules\imgcodecs\include;$(OPENCV_HOME)\modules\videoio\include;$(OPENCV_HOME)\modules\video\include;$(OPENCV_HOME)\modules\objdetect\include;$(FLANDMARK_HOME);$(OPENCV_HOME)\modules\photo\include;../../../imageworks/jsoncpp/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +92,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(OPENCV_HOME);$(OPENCV_HOME)\modules;$(OPENCV_HOME)\modules\core\include;$(OPENCV_HOME)\build;$(OPENCV_HOME)\modules\highgui\include;$(OPENCV_HOME)\modules\imgproc\include;$(OPENCV_HOME)\modules\imgcodecs\include;$(OPENCV_HOME)\modules\videoio\include;$(OPENCV_HOME)\modules\video\include;$(OPENCV_HOME)\modules\objdetect\include;$(FLANDMARK_HOME);$(OPENCV_HOME)\modules\photo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_HOME);$(OPENCV_HOME)\modules;$(OPENCV_HOME)\modules\core\include;$(OPENCV_HOME)\build;$(OPENCV_HOME)\modules\highgui\include;$(OPENCV_HOME)\modules\imgproc\include;$(OPENCV_HOME)\modules\imgcodecs\include;$(OPENCV_HOME)\modules\videoio\include;$(OPENCV_HOME)\modules\video\include;$(OPENCV_HOME)\modules\objdetect\include;$(FLANDMARK_HOME);$(OPENCV_HOME)\modules\photo\include;../../../imageworks/jsoncpp/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
