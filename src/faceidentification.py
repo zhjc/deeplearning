@@ -23,6 +23,11 @@ import numpy as np
 
 import sklearn.metrics.pairwise as pw
 
+OPENCV_ALIGN = 0
+FLANDMARK_ALIGN = 1
+
+g_align_method = OPENCV_ALIGN
+
 work_root = "D:\\Master\\Public\\deeplearning\\deeplearning\\"
 cv_root = 'D:/Master/Public/opencv/'
 caffe_root = 'D:/Work/Python/imgworks/'
@@ -59,9 +64,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.startcamera = False
         self.curfilepath = None
         self.cropfilepath = None
+        self.loadimage = False
         
     def about(self):
-        QMessageBox.about(self, "About the system", self.tr("图形识别系统"))
+        QMessageBox.about(self, "About the system", self.tr("基于vggface\n人脸识别系统"))
         
     def capture_img(self):
         self.capture_diag.cp.capture()
@@ -90,13 +96,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         qpm = QPixmap.fromImage(imgdrawed)
         miniqpm = qpm.scaled(341, 361, QtCore.Qt.KeepAspectRatio)
         self.camera.setPixmap(miniqpm)
+        self.loadimage = True
                    
         OutDebugInfo("destroy")
         
         self.capture_diag.destroy()
-        
-        os.system(exe_path+' '+conf_path+' '+self.curfilepath)
-        self.cropfilepath = work_root+'data\\result\\cur_online.jpg'
         
     def save_img(self):
         pass    
@@ -117,9 +121,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         # setting the device
         diag.device = QCamera.availableDevices()[0]
         diag.m_camera = QCamera(diag.device)
-
-        #test
-        #diag.label.setText(str(diag.m_camera.availableDevices()))
 
         diag.view_finder = QtMultimediaWidgets.QCameraViewfinder()
         diag.view_finder.setMinimumSize(250, 250)
@@ -168,7 +169,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         else:
             qpm = QPixmap.fromImage(img)
             miniqpm = qpm.scaled(341,361,QtCore.Qt.KeepAspectRatio)
-            self.camera.setPixmap(miniqpm)  
+            self.camera.setPixmap(miniqpm)
+
+            self.curfilepath = work_root+'data\\work\\cur_online.jpg'
+            qpm.save(self.curfilepath)
+            self.loadimage = True
        
     def read_image(self,filename):  
         averageImg = [129.1863,104.7624,93.5940]  
@@ -181,9 +186,32 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         
         return X
         
+    def align_and_crop(self):
+        OutDebugInfo("align_and_crop")
+        OutDebugInfo(self.curfilepath)
+        if g_align_method==FLANDMARK_ALIGN:
+            os.system(exe_path+' '+conf_path+' '+self.curfilepath)
+            self.cropfilepath = work_root+'data\\result\\cur_online.jpg'
+        elif g_align_method==OPENCV_ALIGN:
+            img = cv2.imread(self.curfilepath)
+            if img is None:
+                return
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            for (x,y,w,h) in faces:
+                crop_img = img[y:(y+h), x:(x+w)]
+                cv2.imwrite(work_root+'data\\result\\cur_online.jpg', crop_img)
+            self.cropfilepath = work_root+'data\\result\\cur_online.jpg'
+        
     def capture_and_idfy(self):
         OutDebugInfo("capture_and_idfy")
-        if self.cropfilepath is None or self.cropfilepath=="":
+        if self.loadimage==False:
+            QMessageBox.about(self, "Warning", self.tr("请先使用摄像头采集照片"))
+            return
+            
+        self.align_and_crop()
+        
+        if  self.cropfilepath is None or self.cropfilepath=="":
             QMessageBox.about(self, "Warning", self.tr("请先使用摄像头采集照片"))
             return
         
@@ -194,12 +222,27 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         feature = np.reshape(feature,(shape_x, 4096))
         
         self.face_feature_comp(feature)
-              
+    
+    def clear_top_info(self):
+        self.top1.clear()
+        self.top2.clear()
+        self.top3.clear()
+        self.top4.clear()
+        self.top5.clear()
+        
+        self.top1_name.clear()
+        self.top2_name.clear()
+        self.top3_name.clear()
+        self.top4_name.clear()
+        self.top5_name.clear()
+        
     def face_feature_comp(self, feature):
         dataset_path = work_root + 'data/fc7_feature_npy/'
         most_similar_degree = 0.0
         list_similar_name = []
         list_similar_path = []
+        
+        self.clear_top_info()
         
         for item in os.listdir(dataset_path):
             curfile = dataset_path+item
@@ -208,33 +251,27 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                     curdata = np.load(curfile)
                     predicts = pw.cosine_similarity(feature, curdata)
                     similar_rate = np.add.reduce(predicts)[0]
-                    #OutDebugInfo(curfile, similar_rate)
                     list_similar_name.append(item.split('.')[0])
                     list_similar_path.append(similar_rate)
         
-        sorted_in_sr_index = np.argsort(list_similar_path)
-        sorted_sr_index = sorted_in_sr_index[::-1]
-        print(list_similar_path)
-        print(sorted_sr_index)
-        #OutDebugInfo(list_similar_path)
-        #OutDebugInfo(sorted_sr_index)
+        sorted_in_sr_index = np.argsort(list_similar_path) # increase sort
+        sorted_sr_index = sorted_in_sr_index[::-1] # decrease sort
         lens = len(list_similar_path)
-        print(str(list_similar_path[sorted_sr_index[0]]))
-        print(str(list_similar_path[sorted_sr_index[1]]))
-        print(str(list_similar_path[sorted_sr_index[2]]))
-        print(str(list_similar_path[sorted_sr_index[3]]))
-        print(str(list_similar_path[sorted_sr_index[4]]))
+        OutDebugInfo(str(list_similar_path[sorted_sr_index[0]]))
+        OutDebugInfo(str(list_similar_path[sorted_sr_index[1]]))
+        OutDebugInfo(str(list_similar_path[sorted_sr_index[2]]))
+        OutDebugInfo(str(list_similar_path[sorted_sr_index[3]]))
+        OutDebugInfo(str(list_similar_path[sorted_sr_index[4]]))
         if list_similar_path[sorted_sr_index[0]] > 0.5 or True:
-            self.top1_name.setText(list_similar_name[sorted_sr_index[0]]+' '+str(list_similar_path[sorted_sr_index[0]]))
+            self.top1_name.setText('1 '+list_similar_name[sorted_sr_index[0]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[0]]))
             strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[0]]+".JPG"
             imgdrawed = QImage(strimgpath)
             qpm = QPixmap.fromImage(imgdrawed)
             miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
             self.top1.setPixmap(miniqpm)
-            
 
             if lens>1 and list_similar_path[sorted_sr_index[1]] > 0.5:
-                self.top2_name.setText(list_similar_name[sorted_sr_index[1]]+' '+str(list_similar_path[sorted_sr_index[1]]))
+                self.top2_name.setText('2 '+list_similar_name[sorted_sr_index[1]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[1]]))
                 strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[1]]+".JPG"
                 imgdrawed = QImage(strimgpath)
                 qpm = QPixmap.fromImage(imgdrawed)
@@ -242,7 +279,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 self.top2.setPixmap(miniqpm)
                 
             if lens>2 and list_similar_path[sorted_sr_index[2]] > 0.5:
-                self.top3_name.setText(list_similar_name[sorted_sr_index[2]])
+                self.top3_name.setText('3 '+list_similar_name[sorted_sr_index[2]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[2]]))
                 strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[2]]+".JPG"
                 imgdrawed = QImage(strimgpath)
                 qpm = QPixmap.fromImage(imgdrawed)
@@ -250,7 +287,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 self.top3.setPixmap(miniqpm)
                 
             if lens>3 and list_similar_path[sorted_sr_index[3]] > 0.5:
-                self.top4_name.setText(list_similar_name[sorted_sr_index[3]])
+                self.top4_name.setText('4 '+list_similar_name[sorted_sr_index[3]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[3]]))
                 strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[3]]+".JPG"
                 imgdrawed = QImage(strimgpath)
                 qpm = QPixmap.fromImage(imgdrawed)
@@ -258,7 +295,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 self.top4.setPixmap(miniqpm)
                 
             if lens>4 and list_similar_path[sorted_sr_index[4]] > 0.5:
-                self.top5_name.setText(list_similar_name[sorted_sr_index[4]])
+                self.top5_name.setText('5 '+list_similar_name[sorted_sr_index[4]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[4]]))
                 strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[4]]+".JPG"
                 imgdrawed = QImage(strimgpath)
                 qpm = QPixmap.fromImage(imgdrawed)

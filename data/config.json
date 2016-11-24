@@ -1,0 +1,14 @@
+{
+    "name": "face_alignment",
+    "workpath": "D:\\Master\\Public\\deeplearning\\deeplearning\\",
+    "imgabusolutepath": "true",
+    "config":
+    [
+        {
+            "dataset":"data\\datasets\\",
+            "savepath":"data\\result\\",
+            "faceCascadeFilename":"data\\haarcascade_frontalface_alt.xml",
+            "flandmarkModel":"data\\flandmark_model.dat"
+        }
+    ]
+}

@@ -7,12 +7,14 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("FaceIdentification")
         MainWindow.resize(779, 473)
         MainWindow.setStyleSheet("")
+        MainWindow.setWindowIcon(QIcon('icons/net.ico'))
         self.centralWidget = QtWidgets.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.camera = QtWidgets.QLabel(self.centralWidget)
@@ -27,7 +29,7 @@ class Ui_MainWindow(object):
 "background-color: rgb(183, 183, 255);")
         self.identification.setObjectName("identification")
         self.top_k_label = QtWidgets.QLabel(self.centralWidget)
-        self.top_k_label.setGeometry(QtCore.QRect(600, 10, 101, 21))
+        self.top_k_label.setGeometry(QtCore.QRect(600, 10, 103, 21))
         self.top_k_label.setStyleSheet("font: 12pt \"微软雅黑\";\n"
 "color: rgb(0, 0, 255);")
         self.top_k_label.setObjectName("top_k_label")
@@ -125,7 +127,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "FaceIdentification"))
         self.identification.setText(_translate("MainWindow", "Identification"))
-        self.top_k_label.setText(_translate("MainWindow", "Top-k Results"))
+        self.top_k_label.setText(_translate("MainWindow", "Top-5 Results"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Camera"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
