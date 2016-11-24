@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.identification.setText(_translate("MainWindow", "Identification"))
         self.top_k_label.setText(_translate("MainWindow", "Top-k Results"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
-        self.menuEdit.setTitle(_translate("MainWindow", "Run"))
+        self.menuEdit.setTitle(_translate("MainWindow", "Camera"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.actionOpen_File.setText(_translate("MainWindow", "Open File"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
