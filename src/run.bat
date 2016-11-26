@@ -1,3 +1,3 @@
-C:\Anaconda2\python.exe D:\Master\Public\deeplearning\deeplearning\src\faceidentification.py
+C:\Anaconda2\python.exe faceidentification.py
 
 pause

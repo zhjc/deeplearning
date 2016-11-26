@@ -56,6 +56,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         super(MyWindow, self).__init__()
         self.setupUi(self)
         self.actionOpen_File.triggered.connect(self.openfile)
+        self.actionOpencv_Align.triggered.connect(self.opencv_align)
+        self.actionFlandmark_Align.triggered.connect(self.flandmark_align)
         self.actionAbout.triggered.connect(self.about)
         self.actionStart.triggered.connect(self.start)
         self.actionStop.triggered.connect(self.stop)
@@ -68,6 +70,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         
     def about(self):
         QMessageBox.about(self, "About the system", self.tr("基于vggface\n人脸识别系统"))
+        
+    def opencv_align(self):
+        OutDebugInfo("OPENCV_ALIGN")
+        g_align_method = OPENCV_ALIGN
+    
+    def flandmark_align(self):
+        OutDebugInfo("FLANDMARK_ALIGN")
+        g_align_method = FLANDMARK_ALIGN  
         
     def capture_img(self):
         self.capture_diag.cp.capture()
