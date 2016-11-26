@@ -24,7 +24,11 @@ int main(int argc, char** argv)
     }
 
     fa::FaceAlignment fa(strConfigPath, dstImageFile);
-    fa.Run();
+    int rs = fa.Run();
+    if (rs < 0)
+    {
+        cout << "detect or crop failed!" << endl;
+    }
 
     return 0;
 }

@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "FaceIdentification"))
         self.identification.setText(_translate("MainWindow", "Identification"))
-        self.top_k_label.setText(_translate("MainWindow", "Top-5 Results"))
+        self.top_k_label.setText(_translate("MainWindow", "Top-k Results"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Camera"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))

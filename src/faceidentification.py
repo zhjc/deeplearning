@@ -262,13 +262,15 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         OutDebugInfo(str(list_similar_path[sorted_sr_index[2]]))
         OutDebugInfo(str(list_similar_path[sorted_sr_index[3]]))
         OutDebugInfo(str(list_similar_path[sorted_sr_index[4]]))
-        if list_similar_path[sorted_sr_index[0]] > 0.5 or True:
+        numk = 0
+        if list_similar_path[sorted_sr_index[0]] > 0.45:
             self.top1_name.setText('1 '+list_similar_name[sorted_sr_index[0]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[0]]))
             strimgpath = work_root+"data/face_aligned/"+list_similar_name[sorted_sr_index[0]]+".JPG"
             imgdrawed = QImage(strimgpath)
             qpm = QPixmap.fromImage(imgdrawed)
             miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
             self.top1.setPixmap(miniqpm)
+            numk = numk + 1
 
             if lens>1 and list_similar_path[sorted_sr_index[1]] > 0.5:
                 self.top2_name.setText('2 '+list_similar_name[sorted_sr_index[1]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[1]]))
@@ -277,6 +279,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 qpm = QPixmap.fromImage(imgdrawed)
                 miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
                 self.top2.setPixmap(miniqpm)
+                numk = numk + 1
                 
             if lens>2 and list_similar_path[sorted_sr_index[2]] > 0.5:
                 self.top3_name.setText('3 '+list_similar_name[sorted_sr_index[2]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[2]]))
@@ -285,6 +288,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 qpm = QPixmap.fromImage(imgdrawed)
                 miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
                 self.top3.setPixmap(miniqpm)
+                numk = numk + 1
                 
             if lens>3 and list_similar_path[sorted_sr_index[3]] > 0.5:
                 self.top4_name.setText('4 '+list_similar_name[sorted_sr_index[3]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[3]]))
@@ -293,6 +297,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 qpm = QPixmap.fromImage(imgdrawed)
                 miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
                 self.top4.setPixmap(miniqpm)
+                numk = numk + 1
                 
             if lens>4 and list_similar_path[sorted_sr_index[4]] > 0.5:
                 self.top5_name.setText('5 '+list_similar_name[sorted_sr_index[4]].split('_')[1]+' '+str(list_similar_path[sorted_sr_index[4]]))
@@ -301,6 +306,9 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 qpm = QPixmap.fromImage(imgdrawed)
                 miniqpm = qpm.scaled(91, 91, QtCore.Qt.KeepAspectRatio)
                 self.top5.setPixmap(miniqpm)
+                numk = numk + 1
+                
+            self.top_k_label.setText('Top-'+str(numk)+' Results')
         else:
             QMessageBox.about(self, "Warning", self.tr("数据库中无与此人脸接近的数据，识别失败！"))
 
