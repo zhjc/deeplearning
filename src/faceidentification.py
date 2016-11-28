@@ -246,6 +246,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.top4_name.clear()
         self.top5_name.clear()
         
+        self.top_k_label.setText('Top-k Results')
+        
     def face_feature_comp(self, feature):
         dataset_path = work_root + 'data/fc7_feature_npy/'
         most_similar_degree = 0.0
